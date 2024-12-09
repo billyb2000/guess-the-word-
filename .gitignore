@@ -1,0 +1,62 @@
+import random
+import time
+
+RED = '\033[31m'
+GREEN = '\033[32m'
+YELLOW = '\033[33m'
+RESET = '\033[0m'  
+
+print(f"{GREEN}You get 10 guesses to guess the word \nGOOD LUCK!{RESET}")
+
+words = ["short", "tall", "fat", "ugly", "hideous", "omer", "skinny", "tiny", "smart", "dumb"]
+word = random.choice(words)
+
+def wordguess():
+    global word
+    theword = list(word)  
+    blankspaces = ["_"] * len(theword)  
+    guesses_left = 10  
+    guessed_letters = []  
+    
+    print(f"{YELLOW}Your word has {len(theword)} letters:{RESET}", " ".join(blankspaces))
+    
+    while guesses_left > 0 and "_" in blankspaces: 
+        guess = input(f"{YELLOW}You have {guesses_left} guesses left. Guess a letter:{RESET} ").strip().lower()
+
+        if len(guess) != 1:
+            print(f"{RED}You may only guess one letter.{RESET}")
+        elif guess in guessed_letters:
+            print(f"{RED}You already guessed '{guess}'. Try a different letter.{RESET}")
+        elif guess.isalpha() == False:
+            print(f"{RED}Please enter a valid letter.{RESET}")
+        else:
+            guessed_letters.append(guess)
+            if guess in theword:
+                print(f"{GREEN}Correct, '{guess}' is in the word!{RESET}")
+                for i in range(len(theword)):
+                    if theword[i] == guess:
+                        blankspaces[i] = guess
+            else:
+                print(f"{RED}Oops, '{guess}' is not in the word.{RESET}")
+                guesses_left -= 1
+
+            print(f"{YELLOW}Current word:{RESET} ", " ".join(blankspaces))
+
+    if "_" not in blankspaces:
+        print(f"{GREEN}Congratulations! You guessed the word correctly!{RESET}")
+    else:
+        print(f"{RED}Sorry, you've run out of guesses. The word was: {word}{RESET}")
+
+keepplaying = 1
+
+while keepplaying == 1:
+    wordguess()
+    playagain = int(input("press 1 to play again and 2 to quit: "))
+    if playagain == 1:
+        print("Game Restarting......................")
+    else:
+        print("game ending\n GOODBYE")
+        keepplaying += 1
+
+
+
